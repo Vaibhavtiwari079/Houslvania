@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar"
@@ -11,7 +11,7 @@ import 'photoswipe/dist/photoswipe.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Houslvania | find the perfect house",
   description: "find your dream rental property",
   keywords:'rental,find rentals, find properties'
@@ -19,9 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}) {
   return (
     <GlobalProvider>
           <AuthProvider>

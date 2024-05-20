@@ -9,7 +9,7 @@ const FeaturedProperty = async() => {
         showFeatured:true,
 
     })
-  console.log(properties)
+  
   return (
   
     
