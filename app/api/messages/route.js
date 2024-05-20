@@ -1,90 +1,84 @@
 import connectDB from '@/config/database';
 import Message from '@/models/Message';
 import { getSessionUser } from '@/utils/getSessionUser';
+import { request } from 'http';
 
 export const dynamic = 'force-dynamic';
 
-//Put /api/messages/:id
 
-export const PUT=async(request,{params})=>{
-    try{
+//Get /api/messages
+
+export const GET=async()=>{
+    try {
         await connectDB();
-        const{id}=params;
 
         const sessionUser=await getSessionUser();
-        
-        if (!sessionUser||!sessionUser.user){
-            return new Response(JSON.stringify('User Id is required'),{
-                status:401,
+
+        if(!sessionUser || !sessionUser.user){
+            return new Response(JSON.stringify('user id is required'),{
+                status:401
             })
-        }
-        const {userId }= sessionUser;
-        const message=await Message.findById(id)
-        if(!message) return new Response("Message not found",{
-            status:404
-        })
-        //Verify ownership
-        if(message.recipient.toString()!==userId){
-            return new Response('Unauthorized', { status: 401 });
-        }
 
-        //Update message to read/Unread depending on the current status
-        message.read=!message.read;
-        await message.save()
 
-        return new Response(JSON.stringify(message),{
-            status:200
-        })
-    }
-    catch(error){
-        console.log(error);
-        return new Response('Something went wrong',{
-            status:500
-        })
+        }
+        const {userId}=sessionUser
+        const readMessages=await Message.find({receipient:userId,read:true})
+        .sort({createdAt:-1})//ascenfing order
+        .populate('sender','username')
+        .populate('property','name')
+
+        const unreadMessages=await Message.find({receipient:userId,read:false})
+        .sort({createdAt:-1})//ascenfing order
+        .populate('sender','username')
+        .populate('property','name')
+          
+
+        const messages=[...unreadMessages,...readMessages]
+
+        return new Response(JSON.stringify(messages), { status: 200 });
+    } catch (error) {
+        return new Response("Something went wrong", { status: 500 });
+        
     }
 }
 
-//DELETE /api/messages/:id
 
-export const POST=async(request,{params})=>{
-    try{
+//Post /api/messages
+export const POST=async(request)=>{
+    try {
         await connectDB();
 
-        const {id}=params
-        const sessionUser=await getSessionUser();
+        const {name,email,phone,message,property,receipient}=request.json()
+       const sessionUser=getSessionUser()
+        if(!sessionUser || !sessionUser.user){
+            return new Response(JSON.stringify('user id is required'),{
+                status:401
+            })
 
-        if(!sessionUser||!sessionUser.user){
-            return new Response(
-                JSON.stringify({
-                    message:'You mus be logged in to send a message'
-                }),{
-                    status:401
-                }
-            )
+
         }
-        const {userId}=sessionUser;
-        const message=await Message.findById(id)
-        if(!message) return new Response("Message not found",{
-            status:404
+        const {user}=sessionUser
+
+
+        // can not message to self
+        if(user.Id===receipient){
+           return new Response( JSON.stringify({
+                message:'can not send a message to yourself'
+            }),{status:400})
+        }
+        const newMessage=new Message({
+            sender:user.id,
+            receipient,
+            property,
+            name,email,
+            phone,
+            body:message,
+
         })
-        //Verify ownership
-        if(message.recipient.toString()!==userId){
-            return new Response('Unauthorized', { status: 401 });
-        }
-
-       await message.deleteOne();
-
-    return new Response(JSON.stringify({ message: 'Message Deleted' }), {
-        status: 200,
-      });
-
-
-
-    }catch(error){
+        await newMessage.save();
+        return new Response(JSON.stringify({message:'Message sent'}), { status: 200 });
+    } catch (error) {
+        return new Response("Something went wrong", { status: 500 });
         
-    return new Response("something went wrong", {
-        status: 500,
-      });
-
     }
 }
