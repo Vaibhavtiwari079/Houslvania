@@ -1,7 +1,6 @@
 import connectDB from '@/config/database';
 import Message from '@/models/Message';
 import { getSessionUser } from '@/utils/getSessionUser';
-import { request } from 'http';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,7 +60,7 @@ export const POST=async(request)=>{
 
 
         // can not message to self
-        if(user.Id===receipient){
+        if(user.id===receipient){
            return new Response( JSON.stringify({
                 message:'can not send a message to yourself'
             }),{status:400})

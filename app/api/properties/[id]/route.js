@@ -8,7 +8,7 @@ export const GET =async(request,{params})=>{
 
         const property=await Property.findById(params.id);
 
-        if(!property) return new Response('Propertyj Not Found',{status:404});
+        if(!property) return new Response('Property Not Found',{status:404});
       return new Response(JSON.stringify(property),{
         status:200
       })
