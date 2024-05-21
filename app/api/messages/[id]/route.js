@@ -7,9 +7,11 @@ export const dynamic = 'force-dynamic';
 //Put /api/messages/:id
 
 export const PUT=async(request,{params})=>{
+    
     try{
         await connectDB();
         const{id}=params;
+        
 
         const sessionUser=await getSessionUser();
         
@@ -38,6 +40,7 @@ export const PUT=async(request,{params})=>{
     }
     catch(error){
         console.log(error);
+        console.log(hello)
         return new Response('Something went wrong',{
             status:500
         })

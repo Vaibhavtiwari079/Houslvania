@@ -12,7 +12,7 @@ const Message=({message})=>{
 
     const handleReadClick=async()=>{
         try {
-            const res=await fetch(`/api/messages/${message.id}`,{
+            const res=await fetch(`/api/messages/${message._id}`,{
                 method:'PUT',
             })
 
