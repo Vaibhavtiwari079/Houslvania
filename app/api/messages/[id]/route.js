@@ -12,7 +12,7 @@ export const PUT=async(request,{params})=>{
     
     try{
         await connectDB();
-        const{id}=params;
+        const {id}=params;
 
         
 
@@ -43,7 +43,7 @@ export const PUT=async(request,{params})=>{
     }
     catch(error){
         console.log(error);
-        console.log(hello)
+        
         return new Response('Something went wrong',{
             status:500
         })
@@ -80,7 +80,7 @@ export const DELETE=async(request,{params})=>{
 
        await message.deleteOne();
 
-    return new Response(JSON.stringify({ message: 'Message Deleted' }), {
+    return new Response(JSON.stringify('Message Deleted' ), {
         status: 200,
       });
 

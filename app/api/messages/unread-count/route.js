@@ -12,9 +12,9 @@ export const GET=async(request)=>{
 
         if(!sessionUser||!sessionUser.user){
             return new Response(
-                JSON.stringify({
-                    message:'You mus be logged in to send a message'
-                }),{
+                
+                    'user id req'
+            ,{
                     status:401
                 }
             )}
