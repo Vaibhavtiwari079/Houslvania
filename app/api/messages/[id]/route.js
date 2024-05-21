@@ -1,15 +1,14 @@
 import connectDB from '@/config/database';
 import Message from '@/models/Message';
 import { getSessionUser } from '@/utils/getSessionUser';
-import { useRouter } from 'next/router';
+
 
 export const dynamic = 'force-dynamic';
 
 //Put /api/messages/:id
 
 export const PUT=async(request,{params})=>{
-    const router = useRouter();
-    console.log(`MongoDB call triggered by route: ${router.pathname}`);
+    
     
     try{
         await connectDB();
