@@ -12,7 +12,7 @@ else{
     try {
         await mongoose.connect(process.env.MONGODB_URL);
         connected=true;
-        console.log("Mpngodb connected..")
+        console.log("Mongodb connected..")
     } catch (error) {
         console.log(error)
         

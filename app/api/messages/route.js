@@ -46,11 +46,12 @@ export const GET=async()=>{
 export const POST=async(request)=>{
     try {
         await connectDB();
-
-        const {name,email,phone,message,property,receipient}=request.json()
-       const sessionUser=getSessionUser()
+        
+        const {name,email,phone,message,property,recipient}= await request.json()
+       const sessionUser= await getSessionUser()
+       
         if(!sessionUser || !sessionUser.user){
-            return new Response(JSON.stringify('user id is required'),{
+            return new Response(JSON.stringify({message:'you must be logged in to send a message'}),{
                 status:401
             })
 
@@ -60,16 +61,17 @@ export const POST=async(request)=>{
 
 
         // can not message to self
-        if(user.id===receipient){
+        if(user.id===recipient){
            return new Response( JSON.stringify({
                 message:'can not send a message to yourself'
             }),{status:400})
         }
         const newMessage=new Message({
             sender:user.id,
-            receipient,
+            recipient,
             property,
-            name,email,
+            name,
+            email,
             phone,
             body:message,
 
@@ -77,6 +79,7 @@ export const POST=async(request)=>{
         await newMessage.save();
         return new Response(JSON.stringify({message:'Message sent'}), { status: 200 });
     } catch (error) {
+        console.log(error)
         return new Response("Something went wrong", { status: 500 });
         
     }
