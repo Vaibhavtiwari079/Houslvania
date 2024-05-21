@@ -15,18 +15,19 @@ export const GET=async()=>{
 
         if(!sessionUser || !sessionUser.user){
             return new Response(JSON.stringify('user id is required'),{
-                status:401
+                status:401,
             })
 
 
         }
         const {userId}=sessionUser
-        const readMessages=await Message.find({receipient:userId,read:true})
+
+        const readMessages=await Message.find({recipient:userId,read:true})
         .sort({createdAt:-1})//ascenfing order
         .populate('sender','username')
         .populate('property','name')
 
-        const unreadMessages=await Message.find({receipient:userId,read:false})
+        const unreadMessages=await Message.find({recipient:userId,read:false})
         .sort({createdAt:-1})//ascenfing order
         .populate('sender','username')
         .populate('property','name')
