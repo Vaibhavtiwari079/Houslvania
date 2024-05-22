@@ -1,12 +1,12 @@
-const apiDomain =process.env.NEXT_PUBLIC_API_DOMAIN||null;
+const apiDomain =process.env.NEXT_PUBLIC_API_DOMAIN ||null;
 
 async function fetchProperties({showFeatured=false}={}){
     try {
-      console.log(apiDomain)
+      
       if(!apiDomain){
         return [];
       }
-      const res= await fetch(`${apiDomain}/properties${showFeatured?'/featured':''}`,{
+      const res= await fetch(`${apiDomain}/properties/${showFeatured?'featured':''}`,{
         cache:'no-store'
       })
       if(!res.ok){
@@ -15,7 +15,7 @@ async function fetchProperties({showFeatured=false}={}){
       return res.json();
     } catch (error) {
       
-      console.log("Error happend in fetching",error)
+      console.log(error)
       return [];
       
     }
