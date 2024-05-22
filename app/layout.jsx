@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from "@/components/Footer";
 import { GlobalProvider } from "@/context/GlobalContext";
 import 'photoswipe/dist/photoswipe.css';
+export const dynamic = "force-dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
