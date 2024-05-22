@@ -2,6 +2,7 @@ const apiDomain =process.env.NEXT_PUBLIC_API_DOMAIN||null;
 
 async function fetchProperties({showFeatured=false}={}){
     try {
+      console.log(apiDomain)
       if(!apiDomain){
         return [];
       }
@@ -13,8 +14,8 @@ async function fetchProperties({showFeatured=false}={}){
       }
       return res.json();
     } catch (error) {
-      console.log(error)
-      console.log("Error happend in fetching")
+      
+      console.log("Error happend in fetching",error)
       return [];
       
     }
