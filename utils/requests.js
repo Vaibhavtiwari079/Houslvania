@@ -31,7 +31,7 @@ async function fetchProperties({showFeatured=false}={}){
 async function fetchProperty(id){
   try {
     if(!apiDomain){
-      return [];
+      return null;
     }
     const res= await fetch(`${apiDomain}/properties/${id}`)
     if(!res.ok){
