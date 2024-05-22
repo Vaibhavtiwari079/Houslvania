@@ -13,6 +13,7 @@ async function fetchProperties({showFeatured=false}={}){
       }
       return res.json();
     } catch (error) {
+      console.log(error)
       console.log("Error happend in fetching")
       return [];
       
